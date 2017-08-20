@@ -1,0 +1,182 @@
+<!doctype html>
+<!--[if IE 7 ]>		 <html class="no-js ie ie7 lte7 lte8 lte9" lang="en-US"> <![endif]-->
+<!--[if IE 8 ]>		 <html class="no-js ie ie8 lte8 lte9" lang="en-US"> <![endif]-->
+<!--[if IE 9 ]>		 <html class="no-js ie ie9 lte9>" lang="en-US"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en-US">
+<!--<![endif]-->
+
+<head>
+<meta charset="UTF-8">
+<title>Battleship Game</title>
+
+<link rel="stylesheet" href="external/jquery-ui.css">
+<link rel="stylesheet" href="external/jquery-ui.theme.css">
+<link rel="stylesheet" href="external/jquery-ui.structure.css">
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="external/battleship-game.css">
+
+<script src="external/jquery/jquery.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script src="external/jquery-ui.js"></script>
+<script src="external/battleship-game.js"></script>
+
+</head>
+
+<body class="background-image">
+
+
+	<div class="ui-widget-header ui-corner-all ui-widget"
+		style="margin-top: 20px; padding: 5 .7em;" align="center">
+		<b>Welcome to the world of Games!!</b>
+		<div id="helpDialogDiv" style="float: right; padding-right: 0.5cm;">
+			<span class="ui-icon ui-icon-help"></span><a href="#">About Game</a>
+		</div>
+		<div id="contactusDialogMenu"
+			style="float: right; padding-right: 0.5cm;">
+			<span class="ui-icon ui-icon-contact"></span><a href="#">Contact
+				Us</a>
+		</div>
+		<div id="reStartGame" style="float: right; padding-right: 0.5cm;">
+			<span class="ui-icon ui-icon-refresh"></span><a href="#">Restart
+				Game</a>
+		</div>
+	</div>
+	<br />
+
+	<H3 id="p1baLabel" hidden="true">
+		<font color="Blue">Player One</font>
+	</H3>
+	<H3 id="p2baLabel" hidden="true">
+		<font color="Blue">Player Two</font>
+	</H3>
+
+	<div id="winner" align="center" hidden="true">
+		<img src="images/gameover.jpg" alt="GameOver" width="25%" height="100">
+		<img src="images/winner.jpg" alt="Winner" width="40%" height="100">
+		<img src="images/gameover.jpg" alt="GameOver" width="25%" height="100">
+	</div>
+	<div id="loser" align="center" hidden="true">
+		<img src="images/gameover.jpg" alt="GameOver" width="25%" height="100">
+		<img src="images/loser.jpg" alt="Loser" width="40%" height="100">
+		<img src="images/gameover.jpg" alt="GameOver" width="25%" height="100">
+	</div>
+
+	<div id="waitText" hidden="true"
+		class="ui-state-highlight ui-corner-all"
+		style="margin-top: 20px; padding: 0 .7em;">please wait while
+		player one is ready</div>
+	<div id="waitTextp2" hidden="true"
+		class="ui-state-highlight ui-corner-all"
+		style="margin-top: 20px; padding: 0 .7em;">please wait while
+		player two is ready</div>
+	<div id="waitTextTurn" hidden="true"
+		class="ui-state-highlight ui-corner-all"
+		style="margin-top: 20px; padding: 0 .7em;">please wait for your
+		turn</div>
+	<div id="yourTurn" hidden="true"
+		class="ui-state-highlight ui-corner-all"
+		style="margin-top: 20px; padding: 0 .7em;">It's your turn.
+		please click on opponents battle area to destroy ships</div>
+	<div id="startGameDiv">
+
+		<button id="startGame" hidden="true"
+			class="ui-button ui-corner-all ui-widget">Start Game</button>
+		<button id="joinGame" hidden="true"
+			class="ui-button ui-corner-all ui-widget">Join Game</button>
+	</div>
+	<div id="parentDiv">
+		<h1>
+			<b>Enter the dimensions of battle area:</b>
+		</h1>
+		<ul>
+			<li><label style="display: block; width: 250px; float: left;">No.
+					of Column(s) :</label> <input type="text" id="battleshipcols"
+				placeholder="5" size=1 maxlength="1" pattern="[1-9]"
+				title="Single Digit Number of Rows" required /></li>
+			<li><label style="display: block; width: 250px; float: left;">No.
+					of Row(s): </label><input type="text" id="battleshiprows" placeholder="E"
+				size=1 pattern="[A-Za-z]" maxlength="1" disabled="disabled"
+				title="Single Letter Number of Columns" required /></li>
+			<li><label style="display: block; width: 250px; float: left;">No.
+					of Player(s): </label><input type="text" id="playercount" placeholder="2"
+				size=1 pattern="[2]" maxlength="1" disabled="disabled"
+				title="Number of Player(s)" required /></li>
+			<li><label style="display: block; width: 250px; float: left;">No.
+					of Ship(s) : </label><input type="text" id="shipcount" placeholder="3"
+				size=3 maxlength="3" pattern="[0-9]{1,3}" disabled="disabled"
+				title="Max = Rows * Cols" required /></li>
+			<li><label id="shiparealabel" hidden="true"
+				style="display: block; width: 250px;"><b>Choose your
+						Ship's Battle Area:</b> </label>
+				<div id="shipLocation"></div></li>
+		</ul>
+		<button id="player1" class="ui-button ui-corner-all ui-widget"
+			hidden="true">Start Game Player 1</button>
+		<button id="player2" class="ui-button ui-corner-all ui-widget"
+			hidden="true">Start Game Player 2</button>
+		<br>
+		<br>
+	</div>
+	<div style="float: left;">
+		<H3 id="p1ba" hidden="true">Player One Battle Area</H3>
+		<div id="playerOneBattleArea" class="battleArea"></div>
+	</div>
+
+	<div id="playerTwoBattleAreadiv" style="float: left;">
+
+		<H3 id="p2ba" hidden="true">Player Two Battle Area</H3>
+		<div id="playerTwoBattleArea" class="battleArea"></div>
+	</div>
+
+	<div id="dialog" title="Select all ships error" hidden="true">
+		<p>please select all ships</p>
+	</div>
+	<div id="dialog1" title="Validation error" hidden="true">
+		<p>please provide correct information</p>
+	</div>
+	<div id="dialog2" title="Select all ships error" hidden="true">
+		<p>selected field can't be picked</p>
+	</div>
+	<div id="helpDialog" title="About Game" hidden="true">
+		<p>Battleship game is a war game played on ocean by two players.
+			Each player own his battle area and each player will get same number
+			of ships where each ship may have different size placed at some
+			position in non-overlapping fashion. players cannot see each others
+			ship's location.</p>
+
+		<b>How to play</b>
+		<ul>
+			<li>Currently this game supports only two players at a time,
+				this can be extended to support single player, two player and
+				multiplayer game.</li>
+			<li>Currently this game supports only two players at a time,
+				this can be extended to support single player, two player and
+				multiplayer game.</li>
+			<li>The player who destroys all the ships of other player is
+				winner of the game. If at the end none of the player wins then both
+				player declares peace.</li>
+		</ul>
+		<b>Future Improvements:</b>
+		<ul>
+			<li>Currently this game supports only two players at a time,
+				this can be extended to support single player, two player and
+				multiplayer game.</li>
+			<li>Currently this game supports only two players at a time,
+				this can be extended to support single player, two player and
+				multiplayer game.</li>
+			<li>The player who destroys all the ships of other player is
+				winner of the game. If at the end none of the player wins then both
+				player declares peace.</li>
+		</ul>
+	</div>
+	<div id="contactusDialog" title="Contact Us" hidden="true">
+		<ul>
+			<li>Vikas_baweja@hotmail.com</li>
+			<li>9911523151</li>
+		</ul>
+	</div>
+
+</body>
+</html>

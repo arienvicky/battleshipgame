@@ -1,0 +1,106 @@
+input:invalid {
+	background-color: #ffdddd;
+	color: #c0c0c0;
+}
+
+input:valid {
+	background-color: #ddffdd;
+	color: #c0c0c0;
+}
+
+td {
+	height: 47px;
+	width: 47px;
+	opacity: 0.8;
+	align: center;
+	background-color: #fff2e6;
+	color: #c0c0c0;
+}
+
+table {
+	background: url("images/battleship1.jpg");
+	background-size: 100%;
+}
+
+table span {
+	display: block;
+	background-color: #ccc;
+	color: fff;
+	height: 47px;
+	width: 47px;
+}
+
+.background-image {
+	background: url('images/battleship1.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	margin: 35px;
+	color: #c0c0c0;
+}
+
+.draggable {
+	width: 47px;
+	height: 47px;
+	background: #e6ffe6;
+	top: 150px;
+	background: url('images/battleship2.jpeg');
+	background-size: 100%;
+}
+
+select {
+	border: 1;
+	color: #EEE;
+	background: #3b8ec2;
+	width: 150px;
+}
+
+select:disabled {
+	border: 1;
+	color: #EEE;
+	background: #c0c0c0;
+	width: 150px;
+}
+
+input {
+	border: 1;
+	color: #EEE;
+	background: #c0c0c0;
+	width: 150px;
+}
+
+input:disabled {
+	border: 1;
+	color: #EEE;
+	background: #c0c0c0;
+	width: 150px;
+}
+
+.labelclass {
+	width: 250px;
+}
+
+.hitsuccessorange {
+	width: 47px;
+	height: 47px;
+	top: 150px;
+	background: url('images/battleship3.jpeg');
+	background-size: 100%;
+}
+
+.hitsuccess {
+	width: 47px;
+	height: 47px;
+	top: 150px;
+	background: url('images/battleship3.jpeg');
+	background-size: 100%;
+}
+
+.hitfailure {
+	width: 47px;
+	height: 47px;
+	top: 150px;
+	background: url('images/battleship4.jpeg');
+	background-size: 100%;
+}
